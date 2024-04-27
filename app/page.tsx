@@ -3,14 +3,19 @@
 import ollama from "ollama/browser";
 
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect, useState, useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
 
-type Message = {
-  role: "user" | "assistant";
-  content: string;
-  images?: Uint8Array[] | string[];
-};
+const MESSAGE_SCHEMA = z.object({
+  role: z.enum(["user", "assistant"]),
+  content: z.string(),
+  images: z
+    .union([z.array(z.instanceof(Uint8Array)), z.array(z.string())])
+    .optional(),
+});
+
+type Message = z.infer<typeof MESSAGE_SCHEMA>;
 
 export default function Page() {
   const [newMessageText, setInput] = useState("");
@@ -40,8 +45,9 @@ export default function Page() {
               model: "llama3",
               messages: [...messages, newUserMessage],
             });
+            const newAssistantMessage = MESSAGE_SCHEMA.parse(response.message);
 
-            setMessages((messages) => [...messages, response.message]);
+            setMessages((messages) => [...messages, newAssistantMessage]);
           });
         }}
       >
