@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { z } from "zod";
+import { Bot, CircleUser } from "lucide-react";
 
 const MESSAGE_SCHEMA = z.object({
   role: z.enum(["user", "assistant"]),
@@ -23,14 +24,16 @@ export default function Page() {
   const [isPending, startTransition] = useTransition();
 
   return (
-    <main className="">
-      <pre>{JSON.stringify(messages, null, 2)}</pre>
-      <ol>
-        {messages.map((message, index) => (
-          <Message key={index} message={message} />
-        ))}
-      </ol>
+    <main className="p-4 flex flex-col items-stretch gap-y-4">
+      <div className="grow">
+        <MessageList>
+          {messages.map((message, index) => (
+            <Message key={index} message={message} />
+          ))}
+        </MessageList>
+      </div>
       <form
+        className="flex items-end flex-col gap-y-4"
         onSubmit={(event) => {
           event.preventDefault();
 
@@ -65,11 +68,22 @@ type MessageProps = { message: Message };
 
 function Message(props: MessageProps) {
   return (
-    <li className="flex flex-col">
-      <div className="text-sm font-semibold text-muted-foreground">
-        {props.message.role}
+    <li className="flex flex-col border rounded-md py-3 px-4 bg-background gap-y-1">
+      <div className="font-semibold text-muted-foreground flex items-center">
+        {props.message.role === "assistant" && <div>👽 Assistant</div>}
+        {props.message.role === "user" && <div>🐱 You</div>}
       </div>
       <div>{props.message.content}</div>
     </li>
+  );
+}
+
+type MessageListProps = {
+  children: React.ReactNode;
+};
+
+function MessageList(props: MessageListProps) {
+  return (
+    <ol className="flex flex-col items-stretch gap-y-4">{props.children}</ol>
   );
 }
