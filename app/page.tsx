@@ -52,7 +52,7 @@ export default function Page() {
         </MessageList>
       </section>
 
-      <section className="p-4 border-t shrink-0 sticky bottom-0 left-0 right-0 bg-white">
+      <section className="p-4 shrink-0 sticky bottom-0 left-0 right-0 bg-muted">
         <form
           className="flex items-end flex-col gap-y-4"
           onSubmit={(event) => {
@@ -65,7 +65,9 @@ export default function Page() {
             onChange={(event) => setInput(event.target.value)}
             disabled={isPending}
           />
-          <Button disabled={isPending}>Send</Button>
+          <Button size="sm" disabled={isPending}>
+            Send
+          </Button>
         </form>
       </section>
     </main>
