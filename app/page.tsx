@@ -6,7 +6,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { Message, MESSAGE_SCHEMA } from "./message";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Page() {
   const [newMessageText, setInput] = useState("");
@@ -79,8 +78,8 @@ function MessageListItem(props: MessageListItemProps) {
   return (
     <li className="flex flex-col border rounded-xl py-3 px-4 bg-background gap-y-1">
       <div className="font-semibold text-muted-foreground flex items-center">
-        {props.message.role === "assistant" && <div>👽 Assistant</div>}
-        {props.message.role === "user" && <div>🐱 You</div>}
+        {props.message.role === "assistant" && <div>🐷 Assistant</div>}
+        {props.message.role === "user" && <div>🐶 You</div>}
       </div>
       <div>{props.message.content}</div>
     </li>
@@ -93,6 +92,17 @@ type MessageListProps = {
 
 function MessageList(props: MessageListProps) {
   return (
-    <ol className="flex flex-col items-stretch gap-y-4">{props.children}</ol>
+    <ol className="flex flex-col items-stretch gap-y-4">
+      <li className="flex flex-col border rounded-xl py-3 px-4 bg-background gap-y-1">
+        <div className="font-semibold text-muted-foreground flex items-center">
+          <div>🐱 Jian Jie</div>
+        </div>
+        <div>
+          To start chatting, get <code>ollama</code> running locally on your
+          machine.
+        </div>
+      </li>
+      {props.children}
+    </ol>
   );
 }
